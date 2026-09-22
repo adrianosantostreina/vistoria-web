@@ -25,3 +25,6 @@ dist-ssr
 
 # Temporarios de verificacao
 .tmp/
+
+# Binario do SQLite: copiado de node_modules pelo passo de preparacao
+public/sql-wasm*.wasm

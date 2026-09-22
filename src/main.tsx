@@ -15,12 +15,16 @@ const queryClient = new QueryClient({
  */
 async function iniciar() {
   const { worker } = await import('./mocks/browser')
-  await worker.start({ onUnhandledRequest: 'bypass' })
+  await worker.start({
+    onUnhandledRequest: 'bypass',
+    // Em subdiretorio (GitHub Pages), o worker precisa do caminho completo.
+    serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },
+  })
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <App />
         </BrowserRouter>
       </QueryClientProvider>

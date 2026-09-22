@@ -11,7 +11,8 @@ concluído. O preenchimento em campo acontece no app (outro repositório).
 - Tailwind CSS 4
 - TanStack Query para estado de servidor
 - Vitest + Testing Library
-- MSW para a API simulada (o projeto roda sem backend)
+- MSW para a API simulada + SQLite (sql.js/WebAssembly) como banco
+  (o projeto roda sem backend e sem servidor de banco)
 
 ## Estrutura
 
@@ -20,7 +21,7 @@ src/
   components/   componentes de UI sem regra de negocio
   features/     uma pasta por dominio (clientes, modelos, vistorias)
   services/     chamadas de API e regra de negocio pura
-  mocks/        API simulada (handlers do MSW) e banco em memoria
+  mocks/        API simulada (handlers do MSW), schema e banco SQLite
   types/        tipos compartilhados
 ```
 
@@ -38,12 +39,17 @@ exportando. Teste ao lado, mesmo nome.
 
 ```
 npm install
-npm run dev      # sobe em localhost:5173
+npm run dev      # sobe em localhost:5173 (copia o wasm do SQLite antes)
 npm test         # roda a suite
 npm run check    # tsc --noEmit + oxlint
 ```
 
-Rode `npm run check` antes de considerar qualquer tarefa concluida.
+Rode `npm run check` antes de considerar qualquer tarefa concluida. O check
+inclui a guarda da AR-02 em scripts/verificar-arquitetura.mjs.
+
+O binario do SQLite nao e versionado: `predev` e `prebuild` copiam
+sql-wasm-browser.wasm de node_modules para public/. Sao dois arquivos com
+nomes diferentes (Node x navegador) — ver scripts/preparar-sqlite.mjs.
 
 As regras inquebraveis do projeto estao em `docs/spec/CONSTITUTION.md`.
 Nao copie o conteudo dela para ca — consulte a fonte.

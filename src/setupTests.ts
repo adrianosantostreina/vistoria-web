@@ -5,9 +5,9 @@ import { resetarBanco } from './mocks/db'
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 
-afterEach(() => {
+afterEach(async () => {
   server.resetHandlers()
-  resetarBanco()
+  await resetarBanco()
 })
 
 afterAll(() => server.close())

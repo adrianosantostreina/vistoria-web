@@ -16,10 +16,14 @@ npm install
 npm run dev      # abre em http://localhost:5173
 ```
 
-Não precisa de backend nem de banco: a API é simulada com
-[MSW](https://mswjs.io) dentro do próprio projeto, e os dados ficam no
-`localStorage` do navegador. Para voltar ao estado inicial, limpe o storage do
+Não precisa de backend nem de servidor de banco. A API é simulada com
+[MSW](https://mswjs.io) dentro do próprio projeto, e por trás dela roda
+**SQLite de verdade** — o mesmo motor, compilado para WebAssembly pelo
+[sql.js](https://sql.js.org). O arquivo do banco é guardado no IndexedDB do
+navegador e sobrevive ao F5; para voltar ao estado inicial, limpe os dados do
 site.
+
+Nos testes, o mesmo banco roda em memória e cada caso começa do zero.
 
 ## Verificar
 
@@ -54,7 +58,7 @@ src/
   components/   componentes de UI sem regra de negócio
   features/     uma pasta por domínio (clientes, modelos, vistorias)
   services/     chamadas de API e regra de negócio pura
-  mocks/        API simulada (handlers do MSW) e banco em memória
+  mocks/        API simulada (handlers do MSW), schema SQL e banco SQLite
   types/        tipos compartilhados
 ```
 
@@ -66,6 +70,16 @@ As regras de domínio do livro estão implementadas e testadas em
 - **DM-03** — a data de conclusão é a do dispositivo em campo
 
 Rode `npm test` para ver as duas primeiras sendo verificadas.
+
+## Publicado
+
+A cada push na `main`, o GitHub Actions roda `npm run check`, `npm test` e
+`npm run build`, e publica no GitHub Pages:
+
+**https://adrianosantostreina.github.io/vistoria-web/**
+
+O mesmo critério de pronto do harness vale para o deploy: se a verificação
+reprovar, nada vai ao ar.
 
 ## Licença
 
