@@ -9,7 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "check": "tsc -b --noEmit && oxlint",
+    "check": "tsc -b --noEmit && oxlint && node scripts/verificar-arquitetura.mjs",
     "format": "prettier --write"
   },
   "dependencies": {
