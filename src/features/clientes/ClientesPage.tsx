@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Botao } from '../../components/Botao'
 import { Campo } from '../../components/Campo'
 import { EstadoVazio } from '../../components/EstadoVazio'
 import { useClientes, useCriarCliente } from './useClientes'
@@ -78,13 +79,9 @@ export function ClientesPage() {
             value={form.cidade}
             onChange={(e) => setForm({ ...form, cidade: e.target.value })}
           />
-          <button
-            type="submit"
-            disabled={criar.isPending}
-            className="mt-1 rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 disabled:opacity-60"
-          >
+          <Botao type="submit" disabled={criar.isPending} className="mt-1">
             {criar.isPending ? 'Salvando…' : 'Cadastrar'}
-          </button>
+          </Botao>
           {criar.isError && (
             <p className="text-sm text-red-600">{(criar.error as Error).message}</p>
           )}

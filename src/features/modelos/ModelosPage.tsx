@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Botao } from '../../components/Botao'
 import { Campo } from '../../components/Campo'
 import { EstadoVazio } from '../../components/EstadoVazio'
 import { contarObrigatorios } from '../../services/modelos'
@@ -110,13 +111,14 @@ export function ModelosPage() {
               />
               Obrigatório (exige foto para finalizar)
             </label>
-            <button
+            <Botao
               type="button"
+              variante="secundaria"
               onClick={adicionarItem}
-              className="mt-2 w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+              className="mt-2 w-full"
             >
               Adicionar item
-            </button>
+            </Botao>
           </div>
 
           {itens.length > 0 && (
@@ -129,13 +131,9 @@ export function ModelosPage() {
             </ul>
           )}
 
-          <button
-            type="submit"
-            disabled={criar.isPending}
-            className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 disabled:opacity-60"
-          >
+          <Botao type="submit" disabled={criar.isPending}>
             Criar modelo
-          </button>
+          </Botao>
           {criar.isError && (
             <p className="text-sm text-red-600">{(criar.error as Error).message}</p>
           )}

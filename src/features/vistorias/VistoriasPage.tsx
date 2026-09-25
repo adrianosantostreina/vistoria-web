@@ -1,4 +1,5 @@
 import { useMemo, useState, type FormEvent } from 'react'
+import { Botao } from '../../components/Botao'
 import { EstadoVazio } from '../../components/EstadoVazio'
 import { StatusBadge } from '../../components/StatusBadge'
 import {
@@ -110,13 +111,14 @@ export function VistoriasPage() {
                       Vistoria finalizada não pode ser alterada.
                     </span>
                   ) : (
-                    <button
+                    <Botao
                       type="button"
+                      variante="secundaria"
+                      tamanho="compacto"
                       onClick={() => cancelar.mutate(vistoria.id)}
-                      className="rounded-md border border-slate-300 px-3 py-1 text-sm text-slate-700 hover:bg-slate-50"
                     >
                       Cancelar vistoria
-                    </button>
+                    </Botao>
                   )}
                 </footer>
               </article>
@@ -176,13 +178,9 @@ export function VistoriasPage() {
             />
           </label>
 
-          <button
-            type="submit"
-            disabled={agendar.isPending}
-            className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 disabled:opacity-60"
-          >
+          <Botao type="submit" disabled={agendar.isPending}>
             Agendar vistoria
-          </button>
+          </Botao>
           {agendar.isError && (
             <p className="text-sm text-red-600">{(agendar.error as Error).message}</p>
           )}

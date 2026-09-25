@@ -56,12 +56,29 @@ Offset e simples mas quebra com insercao concorrente. Cursor e correto mas
 mais trabalhoso. Decidir antes de a base de vistorias passar de alguns
 milhares.
 
+## Command novo-componente e skill formulario-de-feature criados
+
+Data: 2026-09. Os dois vieram de dor real, nao de antecipacao.
+
+O command nasceu quando o botao primario apareceu identico em tres paginas
+(clientes, modelos, vistorias) — `grep` confirmou 3 ocorrencias antes de
+qualquer coisa ser escrita. Usado para criar o componente `Botao`, que
+substituiu as 3 ocorrencias por 0.
+
+Ao usar o command, um bug real escapou do `npm run check`: o primeiro
+`Botao` deixava o chamador sobrescrever padding via `className`, e CSS nao
+garante que a classe do `className` vença a classe base — o botao de
+cancelar saiu do tamanho errado com tudo verde. Corrigido trocando a
+sobrescrita implicita por uma prop `tamanho` explicita. Ver
+`src/components/Botao/Botao.tsx`.
+
+A skill nasceu porque o mesmo procedimento — hook de query + mutation,
+estado local do form, invalidar cache, resetar formulario, mostrar erro —
+tinha sido escrito manualmente tres vezes (clientes, modelos, vistorias)
+antes de qualquer skill existir. Ver `.claude/skills/formulario-de-feature/`.
+
 ## Pecas do harness adiadas (candidatos)
 
-Nenhum comando, skill ou agente foi criado ainda — seguindo o Capitulo 14, a
-fundacao vem primeiro e o resto espera a dor real. Candidatos observados:
-
-- command `novo-componente`: esperar a quarta repeticao
 - command `tdd`: entra com a primeira task de feature nova
 - agent `revisor`: esperar a primeira revisao que polua a sessao
 - skill de sincronizacao: a area fica no app, nao neste repositorio
