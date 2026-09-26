@@ -36,7 +36,7 @@ interface LinhaItemVistoria extends LinhaItemModelo {
   item_modelo_id: string
   situacao: ItemVistoria['situacao']
   observacao: string
-  foto_url: string | null
+  foto_uri: string | null
 }
 
 interface LinhaVistoria {
@@ -63,7 +63,7 @@ function itensDoModelo(modeloId: string): ItemModelo[] {
 function itensDaVistoria(vistoriaId: string): ItemVistoria[] {
   return consultar<LinhaItemVistoria>(
     `SELECT id, item_modelo_id, descricao, obrigatorio, situacao,
-            observacao, foto_url
+            observacao, foto_uri
        FROM item_vistoria WHERE vistoria_id = ? ORDER BY ordem`,
     [vistoriaId],
   ).map((linha) => ({
@@ -73,7 +73,7 @@ function itensDaVistoria(vistoriaId: string): ItemVistoria[] {
     obrigatorio: linha.obrigatorio === 1,
     situacao: linha.situacao,
     observacao: linha.observacao,
-    fotoUrl: linha.foto_url,
+    fotoUri: linha.foto_uri,
   }))
 }
 
@@ -241,7 +241,7 @@ export const handlers = [
     itensDoModelo(corpo.modeloId).forEach((item, ordem) => {
       executar(
         `INSERT INTO item_vistoria (id, vistoria_id, item_modelo_id, descricao,
-           obrigatorio, situacao, observacao, foto_url, ordem)
+           obrigatorio, situacao, observacao, foto_uri, ordem)
          VALUES (?, ?, ?, ?, ?, 'pendente', '', NULL, ?)`,
         [novoId('iv'), id, item.id, item.descricao, item.obrigatorio ? 1 : 0, ordem],
       )

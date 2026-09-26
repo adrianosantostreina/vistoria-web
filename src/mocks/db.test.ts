@@ -30,7 +30,7 @@ describe('banco SQLite', () => {
     await abrirBanco()
     const pendentes = consultar<{ descricao: string }>(
       `SELECT descricao FROM item_vistoria
-        WHERE vistoria_id = 'vis-2' AND obrigatorio = 1 AND foto_url IS NULL
+        WHERE vistoria_id = 'vis-2' AND obrigatorio = 1 AND foto_uri IS NULL
         ORDER BY ordem`,
     ).map((l) => l.descricao)
 

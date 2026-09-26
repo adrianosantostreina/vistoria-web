@@ -204,7 +204,7 @@ function semear(base: Database): void {
   itensTelhado.forEach(([itemModeloId, descricao, obrigatorio], i) => {
     base.run(
       `INSERT INTO item_vistoria (id, vistoria_id, item_modelo_id, descricao,
-         obrigatorio, situacao, observacao, foto_url, ordem)
+         obrigatorio, situacao, observacao, foto_uri, ordem)
        VALUES (?, 'vis-1', ?, ?, ?, ?, ?, ?, ?)`,
       [
         `iv-${i + 1}`,
@@ -223,7 +223,7 @@ function semear(base: Database): void {
   itensTelhado.forEach(([itemModeloId, descricao, obrigatorio], i) => {
     base.run(
       `INSERT INTO item_vistoria (id, vistoria_id, item_modelo_id, descricao,
-         obrigatorio, situacao, observacao, foto_url, ordem)
+         obrigatorio, situacao, observacao, foto_uri, ordem)
        VALUES (?, 'vis-2', ?, ?, ?, ?, '', ?, ?)`,
       [
         `iv-1${i + 1}`,
@@ -241,7 +241,7 @@ function semear(base: Database): void {
   itensFachada.forEach(([itemModeloId, descricao, obrigatorio], i) => {
     base.run(
       `INSERT INTO item_vistoria (id, vistoria_id, item_modelo_id, descricao,
-         obrigatorio, situacao, observacao, foto_url, ordem)
+         obrigatorio, situacao, observacao, foto_uri, ordem)
        VALUES (?, 'vis-3', ?, ?, ?, 'pendente', '', NULL, ?)`,
       [`iv-2${i + 1}`, itemModeloId, descricao, obrigatorio, i],
     )

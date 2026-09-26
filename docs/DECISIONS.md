@@ -98,6 +98,31 @@ De brinde: `NaoEncontradoError` gerava "Vistoria nao encontrado" sem
 concordancia de genero. Corrigido passando a frase ja concordada em vez de
 montar a partir do nome do recurso.
 
+## Regra de dominio extraida para vistoria-dominio
+
+Data: 2026-09. `itensObrigatoriosPendentes`, `podeFinalizar`,
+`garantirEditavel`, `validarFinalizacao`, `progresso`, e as classes
+`ErroDeDominio`/`VistoriaFinalizadaError`/`ItemPendenteError` saem de
+`services/` e passam a vir do pacote `vistoria-dominio`
+(github.com/adrianosantostreina/vistoria-dominio), instalado via
+`npm install github:adrianosantostreina/vistoria-dominio`. `services/`
+mantem so o acesso a API; `erros.ts` mantem so o que e especifico de HTTP
+(`NaoEncontradoError`, `RequisicaoInvalidaError`).
+
+Achado real, encontrado comparando os dois `types.ts` lado a lado antes de
+extrair: o campo de foto se chamava `fotoUrl` aqui e `fotoUri` no
+vistoria-app — a mesma regra, dois nomes, sem teste nenhum acusando. Nada
+quebrava porque os dois projetos nunca tinham sido comparados diretamente.
+Renomeado para `fotoUri` nos dois lados (tipo, schema SQL, handlers,
+componentes) — nome mais correto de qualquer forma: nunca foi garantida
+uma URL buscavel por HTTP, e para o app de campo nunca poderia ser.
+
+Depois da integracao: `npm run check` e a suite inteira passaram de
+primeira (22 testes, os 4 que testavam regra pura viraram um smoke test
+so, porque a cobertura exaustiva mora agora no pacote). Instalar via
+`github:` em vez do registro do npm foi decisao pratica, nao definitiva —
+ver `DECISIONS.md` do proprio vistoria-dominio.
+
 ## Pecas do harness adiadas (candidatos)
 
 - command `tdd`: entra com a primeira task de feature nova

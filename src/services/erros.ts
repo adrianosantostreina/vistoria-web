@@ -1,33 +1,15 @@
 /**
- * Erros de domínio. Services lançam estas classes; a camada de UI decide
- * como mostrá-las (ver RULES.md — erro tratado com throw de classe própria).
+ * DM-01 e DM-02 vêm de vistoria-dominio, compartilhadas com o app de
+ * campo. O que é só da camada HTTP deste painel (recurso não encontrado,
+ * requisição inválida) continua aqui.
  */
+export {
+  ErroDeDominio,
+  VistoriaFinalizadaError,
+  ItemPendenteError,
+} from 'vistoria-dominio'
 
-export class ErroDeDominio extends Error {
-  constructor(mensagem: string) {
-    super(mensagem)
-    this.name = new.target.name
-  }
-}
-
-/** DM-01 — vistoria finalizada é imutável. */
-export class VistoriaFinalizadaError extends ErroDeDominio {
-  constructor() {
-    super('Vistoria finalizada não pode ser alterada.')
-  }
-}
-
-/** DM-02 — item obrigatório sem foto impede a finalização. */
-export class ItemPendenteError extends ErroDeDominio {
-  readonly pendentes: string[]
-
-  constructor(pendentes: string[]) {
-    super(
-      `Itens obrigatórios sem foto impedem a finalização: ${pendentes.join(', ')}.`,
-    )
-    this.pendentes = pendentes
-  }
-}
+import { ErroDeDominio } from 'vistoria-dominio'
 
 /**
  * Recebe a frase já concordada ("Vistoria não encontrada.", "Modelo não

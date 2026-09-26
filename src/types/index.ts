@@ -1,9 +1,14 @@
 /**
  * Tipos compartilhados do painel de vistorias.
  *
+ * `Vistoria` e `ItemVistoria` vêm de vistoria-dominio — a mesma forma usada
+ * pelo app de campo. O que é só do painel (Cliente, ModeloVistoria, os
+ * tipos de "novo X" para criar registro) continua aqui.
+ *
  * Datas trafegam sempre como string ISO em UTC, nunca como objeto Date
  * (ver CONSTITUTION.md, artigo AR-04).
  */
+export type { Vistoria, ItemVistoria, StatusVistoria, Situacao } from 'vistoria-dominio'
 
 export interface Cliente {
   id: string
@@ -24,29 +29,6 @@ export interface ModeloVistoria {
   nome: string
   itens: ItemModelo[]
   criadoEm: string
-}
-
-export type StatusVistoria = 'agendada' | 'em_andamento' | 'finalizada'
-
-export interface ItemVistoria {
-  id: string
-  itemModeloId: string
-  descricao: string
-  obrigatorio: boolean
-  situacao: 'pendente' | 'conforme' | 'nao_conforme'
-  observacao: string
-  fotoUrl: string | null
-}
-
-export interface Vistoria {
-  id: string
-  clienteId: string
-  modeloId: string
-  status: StatusVistoria
-  agendadaPara: string
-  /** Data do dispositivo em campo, não do servidor (DM-03). */
-  concluidaEm: string | null
-  itens: ItemVistoria[]
 }
 
 export interface NovoCliente {

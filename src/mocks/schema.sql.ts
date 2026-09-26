@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS item_vistoria (
   situacao        TEXT NOT NULL CHECK (
                     situacao IN ('pendente', 'conforme', 'nao_conforme')),
   observacao      TEXT NOT NULL DEFAULT '',
-  foto_url        TEXT,
+  foto_uri        TEXT,
   ordem           INTEGER NOT NULL
 );
 
