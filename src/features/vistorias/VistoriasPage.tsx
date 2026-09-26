@@ -73,6 +73,13 @@ export function VistoriasPage() {
             const { feitos, total } = progresso(vistoria)
             const pendentes = itensObrigatoriosPendentes(vistoria)
             const finalizada = vistoria.status === 'finalizada'
+            // cancelar é UMA mutation compartilhada por todas as linhas da
+            // lista. Sem checar `variables`, isPending/isError de uma linha
+            // vazam para as outras — ver 18.x no livro.
+            const cancelandoEsta =
+              cancelar.isPending && cancelar.variables === vistoria.id
+            const erroAoCancelarEsta =
+              cancelar.isError && cancelar.variables === vistoria.id
 
             return (
               <article
@@ -111,14 +118,22 @@ export function VistoriasPage() {
                       Vistoria finalizada não pode ser alterada.
                     </span>
                   ) : (
-                    <Botao
-                      type="button"
-                      variante="secundaria"
-                      tamanho="compacto"
-                      onClick={() => cancelar.mutate(vistoria.id)}
-                    >
-                      Cancelar vistoria
-                    </Botao>
+                    <>
+                      <Botao
+                        type="button"
+                        variante="secundaria"
+                        tamanho="compacto"
+                        disabled={cancelandoEsta}
+                        onClick={() => cancelar.mutate(vistoria.id)}
+                      >
+                        {cancelandoEsta ? 'Cancelando…' : 'Cancelar vistoria'}
+                      </Botao>
+                      {erroAoCancelarEsta && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {(cancelar.error as Error).message}
+                        </p>
+                      )}
+                    </>
                   )}
                 </footer>
               </article>
@@ -183,9 +198,6 @@ export function VistoriasPage() {
           </Botao>
           {agendar.isError && (
             <p className="text-sm text-red-600">{(agendar.error as Error).message}</p>
-          )}
-          {cancelar.isError && (
-            <p className="text-sm text-red-600">{(cancelar.error as Error).message}</p>
           )}
         </form>
       </section>

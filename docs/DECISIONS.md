@@ -77,6 +77,27 @@ estado local do form, invalidar cache, resetar formulario, mostrar erro —
 tinha sido escrito manualmente tres vezes (clientes, modelos, vistorias)
 antes de qualquer skill existir. Ver `.claude/skills/formulario-de-feature/`.
 
+## Mutation de cancelar compartilhada entre linhas da lista
+
+Data: 2026-09. `VistoriasPage` chama `useCancelarVistoria()` uma vez, no topo
+do componente, e cada card usa a mesma instancia no `onClick`. Isso e
+correto para disparar a acao, mas `isPending`/`isError`/`variables` da
+mutation sao do HOOK, nao da linha — sem checar `cancelar.variables`, dois
+sintomas reais apareciam: duplo clique disparava duas chamadas DELETE (a
+segunda voltava 404, porque o registro ja tinha sumido) e o erro aparecia
+embaixo do formulario de "Agendar", sem relacao com a linha cancelada.
+
+Reproduzido com Playwright antes de mexer no codigo (duplo clique real:
+204 depois 404). Corrigido comparando `cancelar.variables === vistoria.id`
+para decidir qual linha mostra "Cancelando…" e qual linha mostra o erro.
+Dois testes em `VistoriasPage.test.tsx` prendem o comportamento — os dois
+falham contra o codigo antigo (confirmado com `git stash` antes de escrever
+este registro).
+
+De brinde: `NaoEncontradoError` gerava "Vistoria nao encontrado" sem
+concordancia de genero. Corrigido passando a frase ja concordada em vez de
+montar a partir do nome do recurso.
+
 ## Pecas do harness adiadas (candidatos)
 
 - command `tdd`: entra com a primeira task de feature nova

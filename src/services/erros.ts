@@ -29,10 +29,12 @@ export class ItemPendenteError extends ErroDeDominio {
   }
 }
 
-export class NaoEncontradoError extends ErroDeDominio {
-  constructor(recurso: string) {
-    super(`${recurso} não encontrado.`)
-  }
-}
+/**
+ * Recebe a frase já concordada ("Vistoria não encontrada.", "Modelo não
+ * encontrado.") em vez de montar a frase a partir do nome do recurso — um
+ * "Vistoria não encontrado" sem concordância de gênero é o tipo de erro que
+ * passa despercebido porque não quebra teste nenhum, só soa errado.
+ */
+export class NaoEncontradoError extends ErroDeDominio {}
 
 export class RequisicaoInvalidaError extends ErroDeDominio {}

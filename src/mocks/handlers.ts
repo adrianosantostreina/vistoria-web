@@ -20,6 +20,7 @@ import type {
 
 const agoraIso = () => new Date().toISOString()
 
+/** `mensagem` já vem concordada — ver o comentário em NaoEncontradoError. */
 function naoEncontrado(mensagem: string) {
   return HttpResponse.json({ erro: 'nao_encontrado', mensagem }, { status: 404 })
 }
@@ -210,7 +211,7 @@ export const handlers = [
       `SELECT ${COLUNAS_VISTORIA} FROM vistoria WHERE id = ?`,
       [String(params.id)],
     )
-    return linha ? HttpResponse.json(montarVistoria(linha)) : naoEncontrado('Vistoria')
+    return linha ? HttpResponse.json(montarVistoria(linha)) : naoEncontrado('Vistoria não encontrada.')
   }),
 
   http.post('/api/vistorias', async ({ request }) => {
@@ -221,13 +222,13 @@ export const handlers = [
       'SELECT id FROM modelo WHERE id = ?',
       [corpo.modeloId],
     )
-    if (!modelo) return naoEncontrado('Modelo')
+    if (!modelo) return naoEncontrado('Modelo não encontrado.')
 
     const cliente = consultarUm<{ id: string }>(
       'SELECT id FROM cliente WHERE id = ?',
       [corpo.clienteId],
     )
-    if (!cliente) return naoEncontrado('Cliente')
+    if (!cliente) return naoEncontrado('Cliente não encontrado.')
 
     const id = novoId('vis')
     executar(
@@ -265,7 +266,7 @@ export const handlers = [
       `SELECT ${COLUNAS_VISTORIA} FROM vistoria WHERE id = ?`,
       [id],
     )
-    if (!linha) return naoEncontrado('Vistoria')
+    if (!linha) return naoEncontrado('Vistoria não encontrada.')
     if (linha.status === 'finalizada') {
       return HttpResponse.json({ erro: 'vistoria_finalizada' }, { status: 409 })
     }
@@ -293,7 +294,7 @@ export const handlers = [
       `SELECT ${COLUNAS_VISTORIA} FROM vistoria WHERE id = ?`,
       [id],
     )
-    if (!linha) return naoEncontrado('Vistoria')
+    if (!linha) return naoEncontrado('Vistoria não encontrada.')
     if (linha.status === 'finalizada') {
       return HttpResponse.json({ erro: 'vistoria_finalizada' }, { status: 409 })
     }
